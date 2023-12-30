@@ -3,12 +3,11 @@ Tic Tac Toe Player
 """
 
 import math
+import copy
 
 X = "X"
 O = "O"
 EMPTY = None
-
-
 
 def initial_state():
     """
@@ -23,34 +22,34 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    x_count = sum(row.count(X) for row in board)
-    o_count = sum(row.count(O) for row in board)
+    x_count, o_count = 0, 0
 
-    print(f"X count: {x_count}")
-    print(f"O count: {o_count}")    
+    for row in board:
+        x_count += row.count(X)
+        o_count += row.count(O)
 
-    if x_count != o_count:
-        return O
-    else:
+    if x_count <=  o_count:
         return X
+    else:
+        return O
     
 def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    for i, j in enumerate(board):
-        for k, l in enumerate(j):
-            if l == EMPTY:
-                yield i, k
-            else:
-                continue
+    actions = []
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == EMPTY:
+                actions.append([i, j])
+    return actions
 
 def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
     next_player = player(board)
-    new_board = board[:]
+    new_board = copy.deepcopy(board)
     new_board[action[0]][action[1]] = next_player
     return new_board
 
@@ -129,17 +128,19 @@ def minimax(board):
     if player(board) == X:
         v = -math.inf
         for action in actions(board):
-            v = max(v, min_value(result(board, action)))
-            if v == 1:
-                return action
-        return action
+            new_v = max(v, min_value(result(board, action)))
+            if new_v > v:
+                v = new_v
+                optimal_action = action
+
     else:
         v = math.inf
         for action in actions(board):
-            v = min(v, max_value(result(board, action)))
-            if v == -1:
-                return action
-        return action
+            new_v = min(v, max_value(result(board, action)))
+            if new_v < v:
+                v = new_v
+                optimal_action = action
+    return optimal_action
     
 def max_value(board):
     """

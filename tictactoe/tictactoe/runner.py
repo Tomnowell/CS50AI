@@ -22,7 +22,6 @@ board = ttt.initial_state()
 ai_turn = False
 
 while True:
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -65,7 +64,7 @@ while True:
                 user = ttt.O
 
     else:
-
+        
         # Draw game board
         tile_size = 80
         tile_origin = (width / 2 - (1.5 * tile_size),
