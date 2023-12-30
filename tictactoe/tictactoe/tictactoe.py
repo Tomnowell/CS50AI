@@ -2,7 +2,6 @@
 Tic Tac Toe Player
 """
 
-import math
 import copy
 
 X = "X"
@@ -126,7 +125,7 @@ def minimax(board):
 
     # Recursive case
     if player(board) == X:
-        v = -math.inf
+        v = -2
         for action in actions(board):
             new_v = max(v, min_value(result(board, action)))
             if new_v > v:
@@ -134,7 +133,7 @@ def minimax(board):
                 optimal_action = action
 
     else:
-        v = math.inf
+        v = 2
         for action in actions(board):
             new_v = min(v, max_value(result(board, action)))
             if new_v < v:
@@ -148,7 +147,7 @@ def max_value(board):
     """
     if terminal(board):
         return utility(board)
-    v = -math.inf
+    v = -2
     for action in actions(board):
         v = max(v, min_value(result(board, action)))
     return v
@@ -159,7 +158,7 @@ def min_value(board):
     """
     if terminal(board):
         return utility(board)
-    v = math.inf
+    v = 2
     for action in actions(board):
         v = min(v, max_value(result(board, action)))
     return v
